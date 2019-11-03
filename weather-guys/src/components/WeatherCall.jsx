@@ -1,50 +1,43 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, Component } from "react";
 
 import axios from "axios";
 import WeatherDisplay from "./WeatherDisplay";
 
-class WeatherCall extends Component {
-    constructor() {
-        super();
-        this.state = {
-            weatherData: {},
-            weatherLocation: '',
-            zip: ''    
-        }
-    }   
-  
-    componentDidMount() {
+const WeatherCall = () => {
+    const [weatherData, setWeatherData] = useState({});
+    const [weatherLocation, setWeatherLocation] = useState('');
+    const [zip, setZip] = useState('')
+    
+    useEffect(() => {
         axios
-        .get(`https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/weather?zip=${this.state.weatherData},us&appid=96901f1375395bd16951db545b3c226c`) 
+        .get(`https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/weather?zip=${weatherData},us&appid=96901f1375395bd16951db545b3c226c`) 
         .then(response => {
             console.log('testing API', response);
-            this.setState({
-                weatherData: response.data.main
-            })
+            setWeatherData(response.data.main)
          })
         .catch(err => console.log(err))
+      }, [weatherData]);
+
+ 
+  
+
+
+    const handleChanges = event => {
+        setZip(event.target.value)
+ 
     }
 
-    handleChanges = event => {
-        this.setState({
-            zip: event.target.value
-        })
-    
-    }
-
-    fetchZip = () => {
+    const fetchZip = () => {
         axios
-        .get(`https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/weather?zip=${this.state.zip},us&appid=96901f1375395bd16951db545b3c226c`)
+        .get(`https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/weather?zip=${zip},us&appid=96901f1375395bd16951db545b3c226c`)
         .then( response => {
-            this.setState({
-                weatherData: response.data.main,
-                weatherLocation: response.data.name 
-            })
+            setWeatherData(response.data.main)
+            setWeatherLocation(response.data.name)
         })
         .catch(err => console.log(err));
     }
   
-    render() {
+
         // if (this.state.  < 5){
         //     return (
         //         <div>
@@ -56,15 +49,14 @@ class WeatherCall extends Component {
         // }
       return (
         <div>
-          <input type='text' value={this.state.zip} onChange={this.handleChanges} />
-          <button onClick={this.fetchZip}>Find Weather</button>
+          <input type='text' value={zip} onChange={handleChanges} />
+          <button onClick={fetchZip}>Find Weather</button>
           <WeatherDisplay
-          data = {this.state.weatherData}
-          location={this.state.weatherLocation}
+          data = {weatherData}
+          location={weatherLocation}
           />
         </div>
       );
-    }
   }
 
-export default WeatherCall;
+export default WeatherCall; 

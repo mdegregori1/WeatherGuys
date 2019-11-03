@@ -1,10 +1,11 @@
 import React from 'react';
-import './App.css';
+import WeatherCall from "./components/WeatherCall";
+
 
 function App() {
   return (
     <div>
-      <h1> Test </h1>
+      <WeatherCall/>
     </div>
   );
 }

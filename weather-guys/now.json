@@ -1,0 +1,8 @@
+{
+    "version": 2,
+    "name": "weather-guys",
+    "builds": [{ "src": "weather-guys/package.json", "use": "@now/static-build", "config": {"distDir": "build"} }],
+    "routes": [
+      { "src": "/(.*)", "dest": "weather-guys/$1"}
+    ]
+  } 
